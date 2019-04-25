@@ -11,9 +11,8 @@
             <div class="collapse navbar-collapse " id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item ">
-                        <router-link  active-class="active"  class="nav-link" to="/home"><i class="fa fa-home"></i>Home </router-link>
+                        <router-link  active-class="active"  class="nav-link" to="/home/index"><i class="fa fa-home"></i>Home </router-link>
                     </li>
-
 
                 </ul>
 
@@ -33,7 +32,7 @@
 
                         </a>
                         <div class="dropdown-menu dropdown-menu-right " aria-labelledby="navbarDropdown">
-                            <router-link class="dropdown-item"  to="/profile">My Profile</router-link>
+                            <router-link class="dropdown-item"  to="/profile/profile_data">My Profile</router-link>
                             <a class="dropdown-item" href="#">Log out</a>
                         </div>
                     </li>

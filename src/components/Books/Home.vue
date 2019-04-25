@@ -1,11 +1,10 @@
 <template>
-    <p>chat work</p>
-
+    <router-view></router-view>
 </template>
 
 <script>
     export default {
-        name: "Chat"
+        name: "Home"
     }
 </script>
 

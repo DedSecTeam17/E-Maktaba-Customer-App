@@ -1,5 +1,10 @@
 <template>
-    <p>work</p>
+
+    <div>
+        <p>notification work</p>
+
+        <router-view></router-view>
+    </div>
 
 </template>
 
