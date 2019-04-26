@@ -20,7 +20,7 @@
                 <ul class="navbar-nav">
 
                     <li class="nav-item ">
-                        <router-link active-class="active" class="nav-link"  to="/notifications"><i class="fa fa-bell"> Notifications</i></router-link>
+                        <router-link active-class="active" class="nav-link"  to="/notifications/index"><i class="fa fa-bell"> Notifications</i></router-link>
                     </li>
                     <li class="nav-item ">
                         <router-link  active-class="active" class="nav-link" to="/cart"><i class="fa fa-shopping-cart"> Cart</i></router-link>

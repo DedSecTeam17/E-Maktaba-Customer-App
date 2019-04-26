@@ -1,16 +1,31 @@
 <template>
 
     <div>
-        <p>notification work</p>
+       <div class="row">
+           <div class="col-12">
+               <NotificationItem></NotificationItem>
+           </div>
+           <div class="col-12">
+               <NotificationItem></NotificationItem>
+           </div>
+           <div class="col-12">
+               <NotificationItem></NotificationItem>
+           </div>
+           <div class="col-12">
+               <NotificationItem></NotificationItem>
+           </div>
+       </div>
 
-        <router-view></router-view>
+
     </div>
 
 </template>
 
 <script>
+    import NotificationItem from "./NotificationItem";
     export default {
-        name: "AllNotifications"
+        name: "AllNotifications",
+        components: {NotificationItem}
     }
 </script>
 

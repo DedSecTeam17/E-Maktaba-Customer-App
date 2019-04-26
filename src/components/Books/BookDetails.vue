@@ -109,16 +109,16 @@
             <div class="card" >
                 <div class="card-body">
                     <div class="row m-1" >
-                        <div class="col-2">
-                            <img src="https://via.placeholder.com/600/#e8ecf1" width="100%" height="100%"
+                        <div class="col-3 col-md-2">
+                            <img src="https://via.placeholder.com/600/#e8ecf1"  style="max-width: 100%; height: auto"
                                  class="img-fluid   rounded-circle m-2" alt="...">
                         </div>
-                        <div class="col-10" id="comment">
+                        <div class="col-9 col-md-10" id="comment">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-8">
                                     <p style="color: gray">@Mohammed Elamin</p>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-4">
                                     <p class="text-right"
                                        style="font-size: xx-small; color: gray; ">10 min ago</p>
                                 </div>

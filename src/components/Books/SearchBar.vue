@@ -1,15 +1,34 @@
 <template>
-    <div class="card">
+    <div class="card mt-2">
         <div class="card-body">
-            <form class="form-inline">
-                <div class="form-group mx-sm-3 mb-2">
-                    <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
+            <form >
+
+                <div class="row">
+                    <div class="col-8">
+                        <div class="input-group input-focus">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white"><i class="fa fa-search"></i></span>
+                            </div>
+                            <input type="search" placeholder="Search" class="form-control border-left-0">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <select class="form-control" id="exampleFormControlSelect1">
+                                <option>Category</option>
+                                <option>Category</option>
+                            </select>
+                        </div>
+                    </div>
+
                 </div>
-                <button type="submit" class="btn btn-primary mb-2">Search</button>
+
             </form>
         </div>
     </div>
 </template>
+
+
 
 <script>
     export default {
