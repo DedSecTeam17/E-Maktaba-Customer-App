@@ -31,9 +31,9 @@
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right " aria-labelledby="navbarDropdown">
-                            <router-link class="dropdown-item"  to="/profile/profile_data">My Profile</router-link>
-                            <a class="dropdown-item" href="#">Log out</a>
+                        <div   class="dropdown-menu dropdown-menu-right " aria-labelledby="navbarDropdown">
+                            <router-link  class="dropdown-item"  to="/profile/profile_data">My Profile</router-link>
+                            <a @click="signOut()" class="dropdown-item" href="#">Log out</a>
                         </div>
                     </li>
                 </ul>
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+    import {UserSession} from "../../services/users_session";
+
     export default {
         name: "NavBar",
         created() {
@@ -52,6 +54,11 @@
 
             changeRoute(){
                 console.log(this.$router.currentRoute.path)
+            },
+            signOut(){
+                // UserSession.destroySession();
+                this.$store.dispatch("logOut")
+
             }
         }
 

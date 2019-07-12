@@ -24,7 +24,9 @@ import UserLocation from "./components/cart/UserLocation";
 
 import * as VueGoogleMaps from 'vue2-google-maps'
 import Notifications from "./components/notification/Notifications";
-
+import  {UserSession} from "./services/users_session";
+import MainStore from './store'
+import vuex from 'vuex'
 
 Vue.config.productionTip = false
 
@@ -47,27 +49,49 @@ Vue.use(VueGoogleMaps, {
 
 const routes = [
   {path: '/home', component: Home,children:[
-      {path:':book_id/book',component : BookDetails },
-      {path:'index',component : AllBooks }
+      {path:':book_id/book',component : BookDetails ,meta : {
+              requiresAuth: true
+          } },
+      {path:'index',component : AllBooks , meta : {
+              requiresAuth: true
+          } }
 
-    ]},
+    ], meta : {
+          requiresAuth: true
+      }},
   {path: '/sign_up', component: SignUp},
   {path: '/sign_in', component: SignIn},
   {path: '/change_password', component: PasswordChange},
   {path: '/password_reset', component: PasswordReset},
   {path: '/notifications', component: Notifications,children:
         [
-          {path: 'index', component: AllNotifications},
-          {path: 'chat/:provider_id', component: Chat},
-        ]
+          {path: 'index', component: AllNotifications,meta : {
+                  requiresAuth: true
+              }},
+          {path: 'chat/:provider_id', component: Chat,meta : {
+                  requiresAuth: true
+              }},
+        ],meta : {
+          requiresAuth: true
+      }
   },
-  {path: '/cart', component: MainPage},
-    {path: '/map', component: UserLocation},
+  {path: '/cart', component: MainPage,meta : {
+          requiresAuth: true
+      }},
+    {path: '/map', component: UserLocation,meta : {
+            requiresAuth: true
+        }},
 
     {path: '/profile', component: MainProfile,children:[
-      {path: 'profile_data' , component : ProfileData},
-      {path: 'update_profile' , component : UpdateProfile},
-    ]},
+      {path: 'profile_data' , component : ProfileData,meta : {
+          requiresAuth: true
+        }},
+      {path: 'update_profile' , component : UpdateProfile,meta : {
+          requiresAuth: true
+        }},
+    ],meta : {
+        requiresAuth: true
+      }},
   {
     path: '*',
     component: NotFound
@@ -77,7 +101,33 @@ const routes = [
 const router = new VueRouter({routes,  linkActiveClass: "active",})
 
 
-new Vue({  router,
+router.beforeEach(((to, from, next) => {
+  const requireAuth = to.matched.some(record => record.meta.requiresAuth);
+  if (requireAuth) {
+      if (UserSession.isAuth())
+      {
+          next()
+      }else {
+          next('/sign_in')
+
+      }
+  } else {
+
+      if (UserSession.isAuth())
+      {
+          next('/home/index')
+      }else {
+
+          next()
+
+      }
+  }
+}));
+const store = new vuex.Store(MainStore)
+
+const vm =new Vue({  router,store,
   render: h => h(App),
 
 }).$mount('#app')
+
+export  {vm}

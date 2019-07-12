@@ -5,6 +5,11 @@
         <div class="row m-2">
             <div class="col-md-6 offset-md-3">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="alert alert-danger" v-show="this.$store.getters.showErr">
+                            {{this.$store.getters.getErrorData}}
+                        </div>
+                    </div>
                     <div class="card-body">
                         <!--                        <div class="alert alert-danger m-3 p-3" *ngIf="err">{{err}}</div>-->
                         <div class="needs-validation">
@@ -58,8 +63,10 @@
                                 <button type="submit" class="btn btn-primary btn-block  text-center">
                                     <!--                            <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status">-->
                                     <!--                            </span>-->
-                                    <span>Sign Up</span>
-                                </button>
+                                    <span v-if="this.$store.getters.isLoading" class="spinner-border text-light" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </span>
+                                    <span v-else>Sign Up</span>                                </button>
                                 <router-link to="/sign_in" class="nav-link"> have account ? Sign in</router-link>
                             </form>
                         </div>
@@ -74,6 +81,8 @@
 
 <script>
     import {required, minLength, email,sameAs} from 'vuelidate/lib/validators'
+    import  {UserSession} from "../../services/users_session";
+    import {AuthService} from "../../services/sign_in_service";
 
     export default {
         name: "SignUp",
@@ -83,6 +92,9 @@
                 password_confirm: '',
                 email: '',
                 name: '',
+                isLoading: false,
+                showError : false ,
+                error_data:""
 
             }
         },
@@ -113,7 +125,19 @@
                 } else {
                     console.log('valid')
 
+                    this.SignUp();
+
                 }
+            },
+            SignUp(){
+
+                this.$store.dispatch("signUp",{
+                    "name" : this.name,
+                    "password" : this.password,
+                    "email" : this.email
+                })
+                // this.isLoading = true;
+
             }
         }
     }
