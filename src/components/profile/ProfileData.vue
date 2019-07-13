@@ -8,19 +8,19 @@
                     <li class="list-group-item m-1">
                         <div class="row justify-content-between m-1">
                             <i class="fa fa-user-circle "></i>
-                            <p>Mohammed Elamin</p>
+                            <p>{{name}}</p>
                         </div>
                     </li>
                     <li class="list-group-item m-1">
                         <div class="row justify-content-between m-1">
                             <i class="fa fa-envelope"></i>
-                            <p>melamin100@yahoo.com</p>
+                            <p>{{email}}</p>
                         </div>
                     </li>
                     <li class="list-group-item m-1">
                         <div class="row justify-content-between m-1">
-                            <i class="fa fa-phone"></i>
-                            <p>0902649977</p>
+                            <i class="fa fa-info"></i>
+                            <p>{{about}}</p>
                         </div>
                     </li>
                 </ul>
@@ -32,7 +32,14 @@
 
 <script>
     export default {
-        name: "ProfileDate"
+        name: "ProfileDate",
+        data() {
+            return {
+                email: this.$store.getters.currentUser.email,
+                name: this.$store.getters.currentUser.name,
+                about: this.$store.getters.currentUser.profile["about"],
+            }
+        }
     }
 </script>
 

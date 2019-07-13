@@ -14,7 +14,6 @@
                               <li class="nav-item">
                                   <router-link class="nav-link " to="/profile/profile_data" href="#">My profile</router-link>
                               </li>
-
                               <li class="nav-item">
                                   <router-link class="nav-link " to="/profile/update_profile" href="#">Edit my profile</router-link>
                               </li>

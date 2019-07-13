@@ -2,8 +2,8 @@ import vue from 'vue'
 
 
 import Vuex from 'vuex';
-import {UserSession} from "./services/users_session";
-import {AuthService} from "./services/sign_in_service";
+import {UserSession} from "./services/users_session_services";
+import {AuthService} from "./services/auth_service";
 import {vm} from "./main";
 
 
@@ -21,7 +21,12 @@ export default {
             user_token: "",
             isLoggedIn: !!user,
             loading: false,
+            updating: false,
             auth_error: null,
+            password_reset_message: null,
+            password_reset_err: false,
+            password_change_message: null,
+            password_update_message: null
 
         },
     getters:
@@ -29,8 +34,11 @@ export default {
             isLoading(state) {
                 return state.loading;
             },
-            showErr(state){
-                return state.auth_error!==null;
+            passwordResetHaveErr(state) {
+                return state.password_reset_err;
+            },
+            showErr(state) {
+                return state.auth_error !== null;
             }
             ,
             isLoggedIn(state) {
@@ -39,11 +47,23 @@ export default {
             currentUser(state) {
                 return state.currentUser;
             },
-            getErrorData(state){
+            getErrorData(state) {
                 return state.auth_error;
             },
-            getUserToken(state){
+            getUserToken(state) {
                 return state.user_token;
+            },
+            getPasswordResetMessage(state) {
+                return state.password_reset_message;
+            },
+            getPasswordChangetMessage(state) {
+                return state.password_change_message;
+            },
+            getPasswordUpdateMessage(state) {
+                return state.password_update_message;
+            },
+            getIsUpdating(state) {
+                return state.updating;
             }
 
         }
@@ -66,9 +86,9 @@ export default {
                     commit('login_error', err);
                 })
             },
-            signUp({commit},payload){
+            signUp({commit}, payload) {
                 commit('isLogin');
-                AuthService.signUp(payload.email, payload.password,payload.name).then((response) => {
+                AuthService.signUp(payload.email, payload.password, payload.name).then((response) => {
                     commit('setUserToken', response["user_token"]);
                     // UserSession.setToken(response["user_token"]);
                     if (UserSession.isAuth()) {
@@ -84,19 +104,85 @@ export default {
                     commit('login_error', err);
                 })
             },
-            logOut({commit}){
+            logOut({commit}) {
                 commit("logout");
                 vm.$router.push('/sign_in');
 
+            },
+            passwordReset({commit}, payload) {
+                commit('isLogin');
+                AuthService.passwordReset(payload).then((response) => {
+                    commit('linkSent', response["message"]);
+                }).catch((err) => {
+                    commit('linkNotSent', err["message"]);
+
+                })
+            },
+            passwordChange({commit}, payload) {
+                commit('isLogin');
+                AuthService.passwordChange(payload.new_password, payload.reset_token)
+                    .then((response) => {
+                        commit('passwordSetSuccessfully', response["message"]);
+                        vm.$router.push("/home/index")
+
+
+                    })
+                    .catch((err) => {
+                        commit('passwordSetUnSuccessfully', err["message"]);
+
+                    })
+            },
+            passwordUpdate({commit, state}, payload) {
+                commit('isUpdating');
+                AuthService.passwordUpdate(payload.new_password, payload.old_password, state.user_token)
+                    .then((response) => {
+                        commit('updateSuccessfully', response["message"]);
+                    })
+                    .catch((err) => {
+                        commit('updateUnSuccessfully', err["message"]);
+
+                    })
             }
         },
     mutations:
         {
 
+
+            passwordSetSuccessfully(state, payload) {
+                state.password_change_message = payload;
+                state.loading = false
+            },
+            passwordSetUnSuccessfully(state, payload) {
+                state.password_change_message = payload;
+                state.loading = false
+            },
+
             isLogin(state) {
                 state.isLoggedIn = false;
                 state.loading = true
                 state.auth_error = null
+            },
+            isUpdating(state) {
+                state.updating = true
+            },
+            updateSuccessfully(state, payload) {
+                state.password_update_message = payload;
+                state.updating = false
+
+            },
+            updateUnSuccessfully(state, payload) {
+                state.password_update_message = payload;
+                state.updating = false
+
+            },
+            linkSent(state, payload) {
+                state.password_reset_message = payload;
+                state.loading = false
+            },
+            linkNotSent(state, payload) {
+                state.password_reset_message = payload;
+                state.loading = false
+
             },
             login_successfully(state, payload) {
                 state.loading = false
@@ -122,7 +208,7 @@ export default {
                 UserSession.destroySession();
                 state.currentUser = null
                 state.isLoggedIn = false;
-                state.user_token=""
+                state.user_token = ""
                 state.auth_error = null
             }
 

@@ -24,7 +24,7 @@ import UserLocation from "./components/cart/UserLocation";
 
 import * as VueGoogleMaps from 'vue2-google-maps'
 import Notifications from "./components/notification/Notifications";
-import  {UserSession} from "./services/users_session";
+import  {UserSession} from "./services/users_session_services";
 import MainStore from './store'
 import vuex from 'vuex'
 
@@ -61,7 +61,7 @@ const routes = [
       }},
   {path: '/sign_up', component: SignUp},
   {path: '/sign_in', component: SignIn},
-  {path: '/change_password', component: PasswordChange},
+  {path: '/password_change', component: PasswordChange},
   {path: '/password_reset', component: PasswordReset},
   {path: '/notifications', component: Notifications,children:
         [

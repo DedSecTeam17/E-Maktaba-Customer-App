@@ -5,6 +5,11 @@
         <div class="row m-2">
             <div class="col-md-6 offset-md-3">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="alert alert-danger" v-show="this.$store.getters.getPasswordChangetMessage">
+                            {{this.$store.getters.getPasswordChangetMessage}}
+                        </div>
+                    </div>
                     <div class="card-body">
                         <div class="needs-validation">
                             <form @submit.prevent="submit" class="needs-validation" novalidate>
@@ -20,7 +25,12 @@
                                 <button type="submit" class="btn btn-primary btn-block  text-center">
                                     <!--                            <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status">-->
                                     <!--                            </span>-->
-                                    <span>Change Password</span>
+
+                                    <span v-if="this.$store.getters.isLoading" class="spinner-border text-light" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </span>
+
+                                    <span v-else>Change Password</span>
                                 </button>
 
                             </form>
@@ -42,6 +52,7 @@
         data() {
             return {
                 password:'',
+                reset_token : this.$route.query.token
             }
         },
         validations: {
@@ -58,6 +69,12 @@
                     console.log('invalid')
                 } else {
                     console.log('valid')
+
+                    this.$store.dispatch("passwordChange",{
+                        "new_password":this.password,
+                        "reset_token":this.reset_token
+
+                    })
                 }
             }
         }

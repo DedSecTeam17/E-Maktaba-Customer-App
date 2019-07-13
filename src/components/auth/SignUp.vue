@@ -81,8 +81,8 @@
 
 <script>
     import {required, minLength, email,sameAs} from 'vuelidate/lib/validators'
-    import  {UserSession} from "../../services/users_session";
-    import {AuthService} from "../../services/sign_in_service";
+    import  {UserSession} from "../../services/users_session_services";
+    import {AuthService} from "../../services/auth_service";
 
     export default {
         name: "SignUp",

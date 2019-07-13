@@ -6,6 +6,11 @@
         <div class="row m-2">
             <div class="col-md-6 offset-md-3">
                 <div class="card">
+                    <div class="card-header">
+                        <div class="alert alert-danger" v-show="this.$store.getters.getPasswordResetMessage!==null " >
+                            {{this.$store.getters.getPasswordResetMessage}}
+                        </div>
+                    </div>
                     <div class="card-body">
                         <div class="needs-validation">
                             <form @submit.prevent="submit" class="needs-validation" novalidate>
@@ -22,7 +27,11 @@
                                 <button type="submit" class="btn btn-primary btn-block  text-center">
                                     <!--                            <span *ngIf="loading" class="spinner-border spinner-border-sm" role="status">-->
                                     <!--                            </span>-->
-                                    <span>SEND ME RESET LINK</span>
+                                    <span v-if="this.$store.getters.isLoading" class="spinner-border text-light" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </span>
+
+                                    <span v-else>SEND ME RESET LINK</span>
                                 </button>
 
 
@@ -63,6 +72,8 @@
                     console.log('invalid')
                 } else {
                     console.log('valid')
+
+                    this.$store.dispatch("passwordReset",this.email)
 
                 }
             }

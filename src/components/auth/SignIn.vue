@@ -54,8 +54,8 @@
 
 <script>
     import {required, minLength, email} from 'vuelidate/lib/validators'
-    import {AuthService} from "../../services/sign_in_service";
-    import {UserSession} from "../../services/users_session"
+    import {AuthService} from "../../services/auth_service";
+    import {UserSession} from "../../services/users_session_services"
 
     export default {
         name: "SignIn",

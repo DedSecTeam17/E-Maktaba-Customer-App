@@ -43,7 +43,7 @@
 </template>
 
 <script>
-    import {UserSession} from "../../services/users_session";
+    import {UserSession} from "../../services/users_session_services";
 
     export default {
         name: "NavBar",
