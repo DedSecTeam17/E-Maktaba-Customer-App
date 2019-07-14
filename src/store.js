@@ -18,7 +18,7 @@ export default {
     state:
         {
             currentUser: user,
-            user_token: "",
+            user_token: UserSession.getUserToken(),
             isLoggedIn: !!user,
             loading: false,
             updating: false,
@@ -26,7 +26,11 @@ export default {
             password_reset_message: null,
             password_reset_err: false,
             password_change_message: null,
-            password_update_message: null
+            password_update_message: null,
+            error_message: null,
+            message: "",
+            uploadingImage: false,
+            profile_image_path: UserSession.getUserData().profile_image_path
 
         },
     getters:
@@ -142,11 +146,91 @@ export default {
                         commit('updateUnSuccessfully', err["message"]);
 
                     })
+            },
+            prepareUserData({commit}, payload) {
+                commit("setUserData", payload);
+            },
+            getUserData({commit, state}) {
+                commit("gettingUserData");
+                AuthService.getUserInfo(state.user_token)
+                    .then((response) => {
+                        commit("setUserData", response);
+
+                    }).catch((err) => {
+                    commit("setErrorUser", err);
+
+                });
+            },
+            updateUserProfile({commit, state}, payload) {
+                commit("updatingUserData");
+
+                AuthService.updateUserInfo(payload.phone_num, payload.about, payload.job, state.currentUser._id, state.user_token)
+                    .then((response) => {
+                        commit("userDataUpdated", response);
+
+                    }).catch((err) => {
+                    commit("updatingErr", err);
+                })
+            },
+            uploadUserProfileImage({commit, state}, payload) {
+                commit("startUploadingProfileImage");
+                AuthService.uploadProfileImage(payload, state.user_token)
+                    .then((response) => {
+                        commit("finishUploadProfileImage", response["image_path"]);
+                    })
+                    .catch((err) => {
+                        commit("errorUploadProfileImage");
+                    })
             }
         },
     mutations:
         {
 
+
+            startUploadingProfileImage(state) {
+                state.uploadingImage = true;
+                state.message = "Uploading..";
+            },
+
+            finishUploadProfileImage(state, payload) {
+                state.uploadingImage = false;
+                state.message = "Uploading..";
+                state.profile_image_path = payload;
+                UserSession.updateProfielImage(payload)
+            },
+            errorUploadProfileImage(state) {
+                state.uploadingImage = false;
+                state.message = "Error uploading your profile image";
+            },
+
+
+            updatingUserData(state) {
+                state.loading = true;
+            },
+            userDataUpdated(state, payload) {
+                state.currentUser = payload;
+                state.loading = false;
+                state.message = "user data updated successfully"
+            },
+
+            updatingErr(state, payload) {
+                state.loading = false;
+                state.error_data = payload;
+                state.message = "error occur while update user data"
+
+            },
+            setErrorUser(state, payload) {
+                state.error_data = payload;
+                state.loading = false;
+            },
+            gettingUserData(state) {
+                state.loading = true;
+            },
+
+            setUserData(state, payload) {
+                state.currentUser = payload;
+                state.loading = false;
+            },
 
             passwordSetSuccessfully(state, payload) {
                 state.password_change_message = payload;

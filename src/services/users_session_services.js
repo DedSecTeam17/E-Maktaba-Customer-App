@@ -8,6 +8,14 @@ export class UserSession {
 
     }
 
+    static updateProfielImage(image_path) {
+        // localStorage.setItem( "iat",iat);
+        // localStorage.setItem( "expire",expire);
+        localStorage.setItem("profile_image_path", image_path);
+
+    }
+
+
 
     static saveUserData(user) {
         localStorage.setItem("email", user["email"]);

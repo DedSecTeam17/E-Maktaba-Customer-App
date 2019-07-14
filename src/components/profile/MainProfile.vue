@@ -36,7 +36,8 @@
     import ProfileHeader from "./ProfileHeader";
     export default {
         name: "MainProfile",
-        components: {ProfileHeader}
+        components: {ProfileHeader},
+
     }
 </script>
 

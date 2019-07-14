@@ -4,7 +4,7 @@
     <div>
         <div class="row m-1">
             <div class="col-md-6 offset-md-3">
-                <ul class="list-group">
+                <ul v-if="!this.$store.getters.isLoading" class="list-group">
                     <li class="list-group-item m-1">
                         <div class="row justify-content-between m-1">
                             <i class="fa fa-user-circle "></i>
@@ -24,8 +24,20 @@
                         </div>
                     </li>
                 </ul>
+
+                <div v-else>
+
+                    <div class="row justify-content-center">
+                           <span class="spinner-border text-dark" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </span>
+                    </div>
+
+
+                </div>
             </div>
         </div>
+
     </div>
 
 </template>
@@ -39,6 +51,9 @@
                 name: this.$store.getters.currentUser.name,
                 about: this.$store.getters.currentUser.profile["about"],
             }
+        },
+        beforeCreate() {
+            this.$store.dispatch("getUserData")
         }
     }
 </script>

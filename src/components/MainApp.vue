@@ -9,12 +9,13 @@
 
 <script>
 import NavBar from "./partials/NavBar";
+import {UserSession} from "../services/users_session_services";
+
 export default {
+
   name: 'MainApp',
   components: {NavBar},
-  created(){
 
-  },
   props: {
     msg: String
   }
@@ -23,5 +24,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 
 </style>

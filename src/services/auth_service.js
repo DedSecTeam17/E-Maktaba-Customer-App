@@ -1,4 +1,6 @@
 import axios from 'axios';
+import {UserSession} from "./users_session_services";
+import {vm} from "../main";
 
 const url = "https://young-tor-63067.herokuapp.com/api/";
 
@@ -85,16 +87,15 @@ export class AuthService {
     }
 
 
-
-    static passwordUpdate(newPassword, oldPassword,user_token) {
+    static passwordUpdate(newPassword, oldPassword, user_token) {
         return new Promise(async (resolve, reject) => {
             try {
                 const result = await axios.put(url + "users/update_password", {
                     "old_password": oldPassword,
                     "new_password": newPassword
-                },{
-                    headers :{
-                        "Authorization":`jwt ${user_token}`
+                }, {
+                    headers: {
+                        "Authorization": `jwt ${user_token}`
                     }
                 });
                 const data = result.data;
@@ -105,6 +106,27 @@ export class AuthService {
         });
     }
 
+
+    static updateUserInfo(phone_num, about, job, user_id, token) {
+        //users/5cc429961c3f8211e0e1277f/profile
+        return new Promise(async (resolve, reject) => {
+            try {
+                const result = await axios.post(url + `users/${user_id}/profile`, {
+                    "phone_number": phone_num,
+                    "about": about,
+                    "job": job
+                }, {
+                    headers: {
+                        "Authorization": `jwt ${token}`
+                    }
+                });
+                const data = result.data;
+                resolve(data);
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
 
     static getUserInfo(token) {
         return new Promise(async (resolve, reject) => {
@@ -121,8 +143,26 @@ export class AuthService {
                 reject(e);
             }
         });
+    }
 
 
+    static uploadProfileImage(image, token) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                let formData = new FormData();
+                formData.append('profile_image', image);
+                const result = await axios.post(url + "users/profile/upload_profile_image", formData, {
+                    headers: {
+                        "Authorization": `jwt ${token}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                const data = result.data;
+                resolve(data);
+            } catch (e) {
+                reject(e);
+            }
+        });
     }
 
 
